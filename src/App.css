@@ -1,0 +1,112 @@
+#root {
+    background-color: #111;
+    color: white;
+}
+
+/* Perspective for 3D effects */
+.perspective-1000 {
+    perspective: 1000px;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    box-sizing: border-box;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #262626;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        180deg,
+        #d1d5db,  /* gray-300 */
+        #9ca3af,  /* gray-400 */
+        #6b7280   /* gray-500 */
+    );
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.project-card-wrapper {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.animate-dash {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: dash 2s ease-in-out forwards;
+}
+
+/* .result-chart-box {
+    position: relative;
+    width: 200px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.outer-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    padding: 25px;
+    box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15),
+        -6px -6px 10px -1px rgba(255, 255, 255, 0.7);
+}
+
+.inner-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    box-shadow: inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2),
+        inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7),
+        -0.5px -0.5px 0px rgba(255, 255, 255, 1),
+        0.5px 0.5px 0px rgba(0, 0, 0, 0.15),
+        0px 12px 10px -10px rgba(0, 0, 0, 0.05);
+
+}
+
+.percentage {
+    font-weight: 600;
+    color: #555;
+}
+
+.result-chart-box svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+ */

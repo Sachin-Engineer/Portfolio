@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+
+/* Default: show full text */
+.vw-work-short { display: none; }
+.vw-work-long { display: inline; }
+
+/* Below/equal 391px: show short text */
+@media (max-width: 391px) {
+  .vw-work-long { display: none; }
+  .vw-work-short { display: inline; }
+}
