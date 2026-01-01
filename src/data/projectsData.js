@@ -7,7 +7,8 @@ export const projectsData = [
     subtitleColor: "",
     description: "A modern, responsive developer portfolio showcasing my projects, skills, and contact details. Built with React + Vite and styled with Tailwind CSS, featuring smooth GSAP animations and immersive 3D elements powered by Three.js and React Three Fiber.",
     technologies: ["#HTML", "#CSS", "#Javascript", "#React.js", "#TailwindCss", "#Three.js", "#R3F", "#Gsap", "#figma"],
-    image: "/src/assets/images/Portfolio.png", // Update with your actual path
+    image: new URL('../assets/images/Portfolio.png', import.meta.url).href,
+    link: 'https://sachinkumar.me/',
     alignment: "right"
   },
   {
@@ -18,7 +19,8 @@ export const projectsData = [
     subtitleColor: "",
     description: "GlobSpot is a React-based countries explorer where users can browse and search countries, open a dedicated detail page, and navigate smoothly with client-side routing. It supports light/dark mode via Context + a custom hook, and uses shimmer loaders to keep the UI responsive during loading.",
     technologies: ["#HTML", "#CSS", "#React.js", "#React Router", "#Context API", "#Custom Hook", "#figma"],
-    image: "/src/assets/images/GlobSpot.png",
+    image: new URL('../assets/images/GlobSpot.png', import.meta.url).href,
+    link: 'https://globspot.netlify.app/',
     alignment: "left"
   },
   {
@@ -29,7 +31,8 @@ export const projectsData = [
     subtitleColor: "",
     description: "Responsive, timed quiz with instant feedback, sound toggle, animated results, and high-score saved in localStorage.",
     technologies: ["#HTML", "#CSS", "#Javascript", "#LocalStorage", "#figma"],
-    image: "/src/assets/images/Quiz App.png",
+    image: new URL('../assets/images/Quiz App.png', import.meta.url).href,
+    link: 'https://quiz-app-22-flame.vercel.app/',
     alignment: "right"
   },
   {
@@ -40,7 +43,8 @@ export const projectsData = [
     subtitleColor: "",
     description: "Track expenses by category, sort by title/amount, edit/delete via context menu, totals, and auto-save with localStorage.",
     technologies: ["#CSS", "#Javascript", "#Vite", "#LocalStorage"],
-    image: "/src/assets/images/Expense Tracker.png",
+    image: new URL('../assets/images/Expense Tracker.png', import.meta.url).href,
+    link: 'https://expense-tracker-webapp-22.netlify.app/',
     alignment: "left"
   },
   {
@@ -51,7 +55,8 @@ export const projectsData = [
     subtitleColor: "",
     description: "A clean daily focus app to list tasks, mark them complete, and stay consistent with simple progress feedback.",
     technologies: ["#HTML", "#CSS", "#Javascript", "#LocalStorage"],
-    image: "/src/assets/images/Focus on Today.png",
+    image: new URL('../assets/images/Focus on Today.png', import.meta.url).href,
+    link: 'https://focus-on-today-22.netlify.app/',
     alignment: "right"
   }
 ];

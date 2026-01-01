@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const ProjectCard = ({ project }) => {
-    const { title, titleColor, subtitle, subtitleColor, description, technologies, image, alignment } = project;
+    const { title, titleColor, subtitle, subtitleColor, description, technologies, image, link, alignment } = project;
 
     const rootRef = useRef(null);
     const [mounted, setMounted] = useState(false);
@@ -47,7 +47,7 @@ const ProjectCard = ({ project }) => {
         >
             {/* Project Image */}
             <a
-                href="https://www.google.com/"
+                href={`${link}`}
                 target="_blank"
                 rel="noreferrer"
                 className="relative z-10 project-image w-full md:w-1/2"
@@ -80,7 +80,7 @@ const ProjectCard = ({ project }) => {
                 <div className="flex items-baseline gap-2 mb-2">
                     <h3 className={`text-2xl md:text-3xl font-bold text-[${titleColor}]`}>{title}</h3>
                 </div>
-                <p className={`text-[${titleColor}] text-sm mb-4`}>{subtitle}</p>
+                <p className={`text-[${subtitleColor}] text-sm mb-4`}>{subtitle}</p>
 
                 <p className="text-gray-300 mb-4 leading-relaxed">
                     {description}

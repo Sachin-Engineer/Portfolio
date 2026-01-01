@@ -7,7 +7,6 @@ function Hero() {
   const [loopNum, setLoopNum] = useState(0)
   const [typingSpeed, setTypingSpeed] = useState(150)
 
-  // NEW: download UI state
   const [isDownloading, setIsDownloading] = useState(false)
 
   const phrases = ['Frontend Developer', 'React Developer', 'UI/UX Enthusiast', 'Problem Solver']
@@ -32,25 +31,22 @@ function Hero() {
     return () => clearTimeout(timer)
   }, [text, isDeleting, loopNum, typingSpeed])
 
-  // NEW: download handler
   const handleDownloadResume = async () => {
     if (isDownloading) return
     setIsDownloading(true)
 
-    // Start the download immediately
     const a = document.createElement('a')
-    a.href = '/Sachin-Kumar-Resume.pdf' // file must exist in /public
+    a.href = '/Sachin-Kumar-Resume.pdf'
     a.download = 'Sachin-Kumar-Resume.pdf'
     document.body.appendChild(a)
     a.click()
     a.remove()
 
-    // Fake "downloading" animation time (browser download progress can't be read reliably)
     window.setTimeout(() => setIsDownloading(false), 1200)
   }
 
   const downloadBtnClass =
-    "inline-flex items-center justify-center gap-2 px-5 py-2.5 min-w-[170px] " + // ✅ fixed width
+    "inline-flex items-center justify-center gap-2 px-5 py-2.5 min-w-[170px] " + 
     "bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-[#111] font-semibold rounded-full cursor-pointer " +
     "transition-transform duration-200 ease-out hover:scale-105 active:scale-95 focus:outline-none " +
     "disabled:opacity-70 disabled:cursor-not-allowed"
