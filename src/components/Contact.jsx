@@ -3,14 +3,62 @@ import ContactExperience from './ContactExperience'
 
 function Contact() {
     const [planeFlying, setPlaneFlying] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [submitState, setSubmitState] = useState('idle') // idle | success | error
+    const [statusVisible, setStatusVisible] = useState(false)
 
-    const handleSubmit = (e) => {
+    const dismissStatus = () => {
+        setStatusVisible(false)
+        window.setTimeout(() => setSubmitState('idle'), 350)
+    }
+
+    const encodeForm = (data) => {
+        return Object.keys(data)
+            .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(data[key] ?? '')}`)
+            .join('&')
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
+
+        if (isSubmitting) return
 
         setPlaneFlying(true)
         window.setTimeout(() => setPlaneFlying(false), 600)
 
-        // ...put your form submit logic here (emailjs / api / etc.)
+        setIsSubmitting(true)
+    setSubmitState('idle')
+    setStatusVisible(false)
+
+        try {
+            const form = e.currentTarget
+            const formData = new FormData(form)
+
+            // Netlify expects urlencoded body
+            const payload = encodeForm(Object.fromEntries(formData.entries()))
+
+            const res = await fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: payload
+            })
+
+            if (!res.ok) throw new Error(`Submit failed: ${res.status}`)
+
+            setSubmitState('success')
+            setStatusVisible(true)
+            form.reset()
+
+            // Auto-hide after a moment
+            window.setTimeout(() => {
+                dismissStatus()
+            }, 4500)
+        } catch {
+            setSubmitState('error')
+            setStatusVisible(true)
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     return (
@@ -42,7 +90,22 @@ function Contact() {
                         <form
                             className='w-full max-w-sm bg-transparent'
                             onSubmit={handleSubmit}
+                            name="contact"
+                            method="POST"
+                            data-netlify="true"
+                            data-netlify-honeypot="bot-field"
                         >
+                            {/* Netlify required hidden fields */}
+                            <input type="hidden" name="form-name" value="contact" />
+                            <input type="hidden" name="subject" value="New portfolio contact" />
+
+                            {/* Honeypot field for spam bots (should stay hidden) */}
+                            <p className="hidden">
+                                <label>
+                                    Don’t fill this out if you’re human: <input name="bot-field" />
+                                </label>
+                            </p>
+
                             <label htmlFor="name-input" className="block mb-1 text-sm font-medium text-heading text-gray-300">
                                 Full Name
                             </label>
@@ -62,6 +125,8 @@ function Contact() {
                                 <input
                                     type="text"
                                     id="name-input"
+                                    name='name'
+                                    required
                                     className="relative z-10 block w-full ps-9 pe-3 py-2.5 bg-transparent border-2 border-gray-300 focus:border-transparent focus:outline-2 focus:outline-yellow-500/90 rounded border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
                                     placeholder="please enter your name"
                                 />
@@ -77,8 +142,10 @@ function Contact() {
                                     <svg className="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="#d1d5dc" strokeLinecap="round" strokeWidth="2" d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" /></svg>
                                 </div>
                                 <input
-                                    type="text"
+                                    type="email"
                                     id="input-group-1"
+                                    name='email'
+                                    required
                                     className="relative z-10 block w-full ps-9 pe-3 py-2.5 bg-transparent border-2 border-gray-300 focus:border-transparent focus:outline-2 focus:outline-yellow-500/90 rounded border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
                                     placeholder="please enter your email"
                                 />
@@ -98,6 +165,7 @@ function Contact() {
                                 <input
                                     type="tel"
                                     id="phone-input"
+                                    name='phone'
                                     className="relative z-10 block w-full ps-9 pe-3 py-2.5 bg-transparent border-2 border-gray-300 focus:border-transparent focus:outline-2 focus:outline-yellow-500/90 rounded border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
                                     placeholder="please enter your number"
                                 />
@@ -111,20 +179,76 @@ function Contact() {
                                 <span className="pointer-events-none absolute inset-0 rounded-base bg-neutral-secondary-medium/40 sm:bg-neutral-secondary-medium backdrop-blur-[2px]" />
                                 <textarea
                                     id="message-input"
+                                    name='message'
                                     rows="4"
+                                    required
                                     className="relative z-10 block w-full p-2.5 bg-transparent border-2 border-gray-300 focus:border-transparent focus:outline-2 focus:outline-yellow-500/90 rounded border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
                                     placeholder="Write your message here..."
                                 />
                             </div>
 
+                            {/* Inline status (keeps your portfolio theme) */}
+                            {submitState === 'success' && (
+                                <div
+                                    className={[
+                                        'relative mt-4 rounded-lg border border-gray-500/40 bg-[#111]/50 px-4 py-3 backdrop-blur-sm',
+                                        'transition-all duration-300 ease-out',
+                                        statusVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1 pointer-events-none'
+                                    ].join(' ')}
+                                >
+                                    <button
+                                        type='button'
+                                        onClick={dismissStatus}
+                                        className='group absolute right-3 top-3 inline-flex h-7 w-7 items-center justify-center rounded-full border border-gray-500/40 bg-transparent text-gray-300 transition-colors hover:border-yellow-400/60 hover:text-yellow-300'
+                                        aria-label='Dismiss message'
+                                        title='Dismiss'
+                                    >
+                                        <span className='relative -top-[1px] text-base leading-none'>×</span>
+                                    </button>
+                                    <p className='text-sm font-semibold bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 bg-clip-text text-transparent'>
+                                        Message sent successfully.
+                                    </p>
+                                    <p className='mt-1 text-xs text-gray-300'>
+                                        I’ll get back to you soon.
+                                    </p>
+                                </div>
+                            )}
+
+                            {submitState === 'error' && (
+                                <div
+                                    className={[
+                                        'relative mt-4 rounded-lg border border-red-500/40 bg-[#111]/50 px-4 py-3 backdrop-blur-sm',
+                                        'transition-all duration-300 ease-out',
+                                        statusVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1 pointer-events-none'
+                                    ].join(' ')}
+                                >
+                                    <button
+                                        type='button'
+                                        onClick={dismissStatus}
+                                        className='group absolute right-3 top-3 inline-flex h-7 w-7 items-center justify-center rounded-full border border-red-500/40 bg-transparent text-red-200 transition-colors hover:border-red-400 hover:text-red-100'
+                                        aria-label='Dismiss message'
+                                        title='Dismiss'
+                                    >
+                                        <span className='relative -top-[1px] text-base leading-none'>×</span>
+                                    </button>
+                                    <p className='text-sm font-semibold text-red-300'>
+                                        Something went wrong.
+                                    </p>
+                                    <p className='mt-1 text-xs text-gray-300'>
+                                        Please try again in a moment.
+                                    </p>
+                                </div>
+                            )}
+
                             <button
                                 type='submit'
+                disabled={isSubmitting}
                                 className='group mt-7 mx-auto block bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 px-8 py-2 cursor-pointer rounded-full hover:from-yellow-400 hover:via-yellow-500 hover:to-amber-500 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-110 active:scale-95 active:translate-y-0 active:duration-75'
                             >
                                 <span className='flex gap-2'>
                                     {/* Send text: black by default, gray-400 on button hover */}
                                     <span className='font-bold text-[#111] group-hover:text-gray-500'>
-                                        Send
+                    {isSubmitting ? 'Sending...' : 'Send'}
                                     </span>
 
                                     {/* Plane: black by default, gradient text on button hover */}

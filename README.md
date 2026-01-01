@@ -14,3 +14,21 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Netlify contact form
+
+The contact form in `src/components/Contact.jsx` is configured for **Netlify Forms**.
+
+Netlify needs these in the rendered HTML:
+
+- `<form name="contact" method="POST" data-netlify="true">`
+- `<input type="hidden" name="form-name" value="contact" />`
+- (optional) spam protection: `data-netlify-honeypot="bot-field"`
+
+### Verify after deploy
+
+1. Deploy the site to Netlify.
+2. Submit the form on the deployed site once.
+3. Netlify Dashboard → Site → **Forms** should show a `contact` form + submission.
+
+Note: Netlify detects forms from the **production build output**, so it won’t appear until you deploy.
