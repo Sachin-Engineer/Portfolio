@@ -9,6 +9,17 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Netlify Forms: static hidden form for build-time detection (React/Vite SPA) -->
+    <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="contact" />
+      <input name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <textarea name="message"></textarea>
+    </form>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
