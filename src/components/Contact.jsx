@@ -69,7 +69,7 @@ function Contact() {
                 </h2>
 
                 {/* < sm: avatar behind form (absolute). >= sm: row layout */}
-                <div className='relative mt-8 flex min-h-[70vh] flex-col items-center justify-center gap-8 sm:flex-row'>
+                <div className='relative sm:mt-8 flex min-h-[70vh] flex-col items-center justify-center gap-8 sm:flex-row'>
                     {/* Avatar / Experience */}
                     <div
                         className={[

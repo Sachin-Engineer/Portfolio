@@ -4,7 +4,7 @@ import { projectsData } from '../data/projectsData';
 
 const Projects = () => {
     return (
-        <section id="projects" className="py-16 px-4 md:px-8 lg:px-16">
+        <section id="projects" className="pt-16 px-4 md:px-8 lg:px-16">
             <div className="max-w-7xl mx-auto relative">
                 {/* Section Header */}
                 <div className="text-center mb-12 relative z-10 bg-[#111]">

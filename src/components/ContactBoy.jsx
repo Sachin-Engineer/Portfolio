@@ -9,7 +9,7 @@ import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations, useFBX } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 
-export function ContactBoy(props) {
+export function ContactBoy({ active = true, ...props }) {
   const group = React.useRef()
   const { scene } = useGLTF('/modals/boy-transformed.glb')
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
@@ -26,6 +26,15 @@ export function ContactBoy(props) {
 
     return () => toPlay?.fadeOut?.(0.2)
   }, [actions])
+
+  useEffect(() => {
+    if (!actions) return
+    const allActions = Object.values(actions)
+    for (const action of allActions) {
+      if (!action) continue
+      action.paused = !active
+    }
+  }, [actions, active])
 
   return (
     <group
